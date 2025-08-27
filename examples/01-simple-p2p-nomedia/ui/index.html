@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Video Call without media</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+  }
+  
+  .container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .user-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .call-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #fff3cd;
+    border-radius: 8px;
+    border: 1px solid #ffeaa7;
+  }
+  
+  select {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background: white;
+    min-width: 120px;
+  }
+  
+  select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 5px;
+    transition: all 0.3s;
+  }
+  
+  #callBtn {
+    background: #28a745;
+    color: white;
+  }
+  
+  #callBtn:hover:not(:disabled) {
+    background: #218838;
+  }
+  
+  #callBtn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  #hangupBtn {
+    background: #dc3545;
+    color: white;
+  }
+  
+  #hangupBtn:hover {
+    background: #c82333;
+  }
+  
+  .secondary-btn {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .secondary-btn:hover {
+    background: #5a6268;
+  }
+  
+  #callStatus {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  video {
+    width: 300px;
+    height: 200px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin: 10px;
+    background: #000;
+  }
+  
+  .video-section {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .disabled-text {
+    color: #6c757d;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>WebRTC Video Call</h2>
+  
+  <div class="user-section">
+    <h3>User Settings</h3>
+    <div class="form-group">
+      <label for="userSelect">Your ID:</label>
+      <select id="userSelect">
+        <option value="A">User A</option>
+        <option value="B">User B</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="call-section">
+    <h3>Make a Call</h3>
+    <div class="form-group">
+      <label for="contactSelect">Call to:</label>
+      <select id="contactSelect">
+        <option value="">-- Select Contact --</option>
+        <option value="A">User A</option>
+        <option value="B">User B</option>
+      </select>
+      <span id="selfCallWarning" class="disabled-text" style="display: none;">
+        (Cannot call yourself)
+      </span>
+    </div>
+    
+    <div class="form-group">
+      <button id="callBtn" disabled>📞 Call</button>
+      <button id="hangupBtn">📵 End Call</button>
+      <button class="secondary-btn" onclick="Notification.requestPermission()">🔔 Allow Notifications</button>
+      <button class="secondary-btn" onclick="showRTCStats()">📊 Show WebRTC Statistics</button>
+    </div>
+  </div>
+  
+  <div id="callStatus" style="color: gray; background: #f8f9fa;">⏸️ Waiting</div>
+  
+  <div class="video-section">
+    <div>
+      <h4>Local Video</h4>
+      <video id="localVideo" autoplay muted></video>
+    </div>
+    <div>
+      <h4>Remote Video</h4>
+      <video id="remoteVideo" autoplay></video>
+    </div>
+  </div>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
