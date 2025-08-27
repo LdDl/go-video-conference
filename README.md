@@ -137,7 +137,7 @@ ICE candidate from B to A
 - ✅ ICE candidate buffering
 - ✅ Connection state management
 
-### 02-room-system - 🚧 @todo
+### 03-room-system - 🚧 @todo
 **Status:** Planning phase
 
 **@todo Features:**
