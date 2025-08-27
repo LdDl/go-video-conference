@@ -82,20 +82,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     
         try {
-            // 🆕 ADD THIS: Get user media (camera + microphone)
+            // Get user media (camera + microphone)
             const localStream = await navigator.mediaDevices.getUserMedia({ 
                 video: true, 
                 audio: true 
             });
             
-            // 🆕 ADD THIS: Display local video
+            // Display local video
             const localVideo = document.getElementById('localVideo');
             localVideo.srcObject = localStream;
             console.log('Local video stream started');
     
             pc = createPeerConnection();
             
-            // 🆕 ADD THIS: Add media tracks to peer connection
+            // Add media tracks to peer connection
             localStream.getTracks().forEach(track => {
                 pc.addTrack(track, localStream);
                 console.log(`Added ${track.kind} track`);
@@ -140,10 +140,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             pc = null;
             console.log("Call ended");
             updateCallStatus('disconnected');
-            pendingIceCandidates = []; // Clear buffer
+            // Clear buffer
+            pendingIceCandidates = [];
         }
         
-        // 🆕 ADD THIS: Stop local video streams
+        // Stop local video streams
         const localVideo = document.getElementById('localVideo');
         const remoteVideo = document.getElementById('remoteVideo');
         
@@ -188,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("WebSocket disconnected");
         updateCallStatus('disconnected');
         
-        // 🆕 ADD THIS: Stop media streams on disconnect
+        // Stop media streams on disconnect
         const localVideo = document.getElementById('localVideo');
         if (localVideo && localVideo.srcObject) {
             localVideo.srcObject.getTracks().forEach(track => {
@@ -275,7 +276,7 @@ function createPeerConnection() {
         iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
     });
 
-    // 🆕 ADD THIS: Handle incoming media streams
+    // Handle incoming media streams
     pc.ontrack = (event) => {
         console.log('Remote stream received:', event.streams[0]);
         const remoteVideo = document.getElementById('remoteVideo');
@@ -283,7 +284,6 @@ function createPeerConnection() {
         console.log('Remote video stream displayed');
     };
 
-    // Keep all existing handlers...
     pc.onicecandidate = (event) => {
         if (event.candidate) {
             console.log('Sending ICE candidate:', event.candidate.type);
@@ -364,20 +364,20 @@ async function answerCall(msg) {
     targetId = msg.from;
     
     try {
-        // 🆕 ADD THIS: Get user media when answering
+        // Get user media when answering
         const localStream = await navigator.mediaDevices.getUserMedia({ 
             video: true, 
             audio: true 
         });
         
-        // 🆕 ADD THIS: Display local video
+        // Display local video
         const localVideo = document.getElementById('localVideo');
         localVideo.srcObject = localStream;
         console.log('Local video stream started (answering)');
 
         pc = createPeerConnection();
 
-        // 🆕 ADD THIS: Add media tracks to peer connection
+        // Add media tracks to peer connection
         localStream.getTracks().forEach(track => {
             pc.addTrack(track, localStream);
             console.log(`Added ${track.kind} track (answering)`);
@@ -389,7 +389,6 @@ async function answerCall(msg) {
         document.getElementById("contactSelect").disabled = true;
         document.getElementById("callBtn").disabled = true;
 
-        // Keep existing data channel handler...
         pc.ondatachannel = (event) => {
             const dataChannel = event.channel;
             dataChannel.onopen = () => {
